@@ -1,59 +1,86 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Dante Web GUI
+Dante-GUI - Это графический-web инструмент для комфортной работы с [Dante-Server](https://www.inet.no/dante/), главной задачей которого является управление пользователями.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Список пользователей       |  Cистема                 |  Данные
+:-------------------------:|:------------------------:|:-------------------------:
+![Список пользователей](https://user-images.githubusercontent.com/10038023/39105294-b90d6b26-46bd-11e8-963f-d03e5c7bcac3.png)  |  ![Cистема](https://user-images.githubusercontent.com/10038023/39105311-ccaca73c-46bd-11e8-8bc4-eaffce861200.png)  |  ![Данные](https://user-images.githubusercontent.com/10038023/39105307-c8aba5c0-46bd-11e8-8ba1-50afe639c63d.png)
+[Больше скриншотов](https://github.com/IvanDanilov/dante-gui/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B---Screenshots)
+***
 
-## About Laravel
+## Предисловие
+Пример установки и настройки написан по Debian 9 (Установка на Ubuntu не должна принципиально отличаться). 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+## Установка (Debian 9) - Dante-Server
+Для начала обновим репозитории и систему
+```
+# sudo apt-get update & sudo apt-get upgrade
+```
+Теперь устанавливаем сам Dante-Server: 
+```
+# sudo apt-get install dante-server
+```
+Далее нужно поправить конфиг Dante (Если вы впервые видете консоль, просто приведите содержимое файла к ниже данному виду):
+```
+# nano /etc/danted.conf
+```
+```
+logoutput: stderr
+# Порт Proxy сервера
+# eth0 - Ваш сетевой интерфейс (Обычно eth0, но может отличатся, например ens3, см. # ip addr)
+internal: eth0 port = 1080
+external: eth0
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+socksmethod: username
+user.privileged: root
+user.unprivileged: nobody
+user.libwrap: nobody
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+client pass {
+        from: 0/0 to: 0/0
+        log: error
+}
 
-## Learning Laravel
+socks pass {
+        from: 0/0 to: 0/0
+        log: error
+}
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+```
+Запускаем Dante-Server
+```
+# sudo systemctl restart danted
+```
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## Установка Dante-GUI
+Для установки Dante-GUI, нам понадобится установить на сервер Apache 2 (Или например Nginx), PHP >= 7.1.3, MySQL сервер. 
+Подробнее с требованиями можно ознакомиться на странице [Laravel Установка](https://laravel.com/docs/5.6/installation).
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+В папке где вы собираетесь устанавливать скрипт выполните команду:
+```
+# git clone https://github.com/IvanDanilov/dante-gui ./
+```
+Теперь в этой же папке выполняем следующие команды (Не забудьте предварительно установить composer):
+```
+# composer update
+# php artisan key:generate
+```
+Далее открываеем файл .env для редактирования
+```
+# nano .env
+```
+Тут изменяем следующие строки:
+**APP_URL** - Полный URL до вашей панели
+**APP_PASSWORD** - Пароль для входа в Админ Панель
+**PROXY_SERVER** - Адрес сервера прокси (Домен/IP)
+**PROXY_PORT** - Порт прокси (Его мы указывали выше при настройке)
+**PROXY_USER** - Имя пользователя с root правами (Или что бы мог просто создавать/удалять/изменять пользоватлей)
+**PROXY_PASSWORD** - Пароль от пользователя с root правами
+**MAIL\*** - Смотрим документацию к Laravel, там описано подключение сервисов отправки email (Если вам это нужно)
+**DB_DATABASE** - Название базы данных (Создайте)
+**DB_USERNAME** - Пользователь базы данных
+**DB_PASSWORD** - Пароль базы данных
+Теперь снова выполняем следующую команду:
+```
+# php artisan migrate
+```
+На этом всё. Пишите свои замечания по описанию, постараюсь раскрыть лучше.
