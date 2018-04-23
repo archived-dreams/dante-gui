@@ -38,7 +38,7 @@ class AccessController extends Controller
     $user->update();
 
     // Устанавливаем пароль
-    SSH::run([ 'usermod --password "' . addslashes($user->password) . '" "' . addslashes($user->user) . '"' ]);
+    SSH::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
 
     return response()->json($user->password);
 
