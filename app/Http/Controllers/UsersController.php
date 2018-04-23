@@ -63,7 +63,7 @@ class UsersController extends Controller
       }
 
       // Устанавливаем пароль
-      SSH::run([ 'usermod --password "' . addslashes($user->password) . '" "' . addslashes($user->user) . '"' ]);
+      SSH::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
 
       // Уведомление на почту
       if ($request->has('send')) {
@@ -237,7 +237,7 @@ class UsersController extends Controller
         case "group":
           SSH::run([
             'usermod -g "' . addslashes(env('PROXY_GROUP')) . '" "' . addslashes($user->user) . '"',
-            'usermod --password "' . addslashes($user->password) . '" "' . addslashes($user->user) . '"'
+            'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"'
           ]);
           break;
         // Удаление из базы данных
@@ -252,7 +252,7 @@ class UsersController extends Controller
         case "create_server":
           SSH::run([
             'sudo useradd --shell /usr/sbin/nologin --gid "' . addslashes(env('PROXY_GROUP')) . '" "' . addslashes($user->user) . '"',
-            'usermod --password "' . addslashes($user->password) . '" "' . addslashes($user->user) . '"'
+            'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"'
           ]);
           break;
         // Создание записи в базе данных
@@ -262,7 +262,7 @@ class UsersController extends Controller
             'comment' => 'Создано при синхронизации'
           ]);
           // Меняем пароль
-          SSH::run([ 'usermod --password "' . addslashes($user->password) . '" "' . addslashes($user->user) . '"' ]);
+          SSH::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
           break;
       }
 
