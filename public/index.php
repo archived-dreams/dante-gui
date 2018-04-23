@@ -1,7 +1,5 @@
 <?php
 
-if ('78.57.230.151' !== $_SERVER['REMOTE_ADDR']) die();
-
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
