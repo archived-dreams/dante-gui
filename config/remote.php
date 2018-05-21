@@ -28,9 +28,9 @@ return [
 
     'connections' => [
         'production' => [
-            'host'      => env('PROXY_SERVER'),
-            'username'  => env('PROXY_USER'),
-            'password'  => env('PROXY_PASSWORD'),
+            'host'      => env('SSH_SERVER'),
+            'username'  => env('SSH_USER'),
+            'password'  => env('SSH_PASSWORD'),
             'key'       => '',
             'keytext'   => '',
             'keyphrase' => '',

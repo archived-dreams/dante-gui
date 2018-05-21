@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
-use SSH;
+use App\ExecProvider;
 
 class AccessController extends Controller
 {
@@ -38,7 +38,7 @@ class AccessController extends Controller
     $user->update();
 
     // Устанавливаем пароль
-    SSH::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
+    ExecProvider::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
 
     return response()->json($user->password);
 

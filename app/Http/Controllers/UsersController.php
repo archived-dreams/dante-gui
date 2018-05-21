@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProxyAccess;
 use App\User;
-use SSH;
+use App\ExecProvider;
 
 class UsersController extends Controller
 {
@@ -46,7 +46,7 @@ class UsersController extends Controller
 
       // Создание пользователя на сервере
       $this->created = true;
-      SSH::run([
+      ExecProvider::run([
         'sudo useradd --shell /usr/sbin/nologin --gid "' . addslashes(env('PROXY_GROUP')) . '" "' . addslashes($user->user) . '"'
       ], function ($line) {
         if (trim($line) != '') {
@@ -63,7 +63,7 @@ class UsersController extends Controller
       }
 
       // Устанавливаем пароль
-      SSH::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
+      ExecProvider::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
 
       // Уведомление на почту
       if ($request->has('send')) {
@@ -110,7 +110,7 @@ class UsersController extends Controller
 
       // Удаление с сервера
       $this->deleted = true;
-      SSH::run([
+      ExecProvider::run([
         'sudo userdel "' . addslashes($user->user) . '"'
       ], function ($line) {
         if (trim($line) != '') {
@@ -165,7 +165,7 @@ class UsersController extends Controller
       $this->database = [];
       // Список всех пользователей и их группы
       $this->users = [];
-      SSH::run([
+      ExecProvider::run([
         "cat /etc/passwd | awk -F':' '{ print $1}' | xargs -n1 groups"
       ], function ($line) {
         if (trim($line) != '') {
@@ -235,7 +235,7 @@ class UsersController extends Controller
       switch ($action) {
         // Смена группы
         case "group":
-          SSH::run([
+          ExecProvider::run([
             'usermod -g "' . addslashes(env('PROXY_GROUP')) . '" "' . addslashes($user->user) . '"',
             'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"'
           ]);
@@ -246,11 +246,11 @@ class UsersController extends Controller
           break;
         // Удалить на сервере
         case "delete_server":
-          SSH::run([ 'sudo userdel "' . addslashes(isset($user) ? $user->user : $request->input('user')) . '"' ]);
+          ExecProvider::run([ 'sudo userdel "' . addslashes(isset($user) ? $user->user : $request->input('user')) . '"' ]);
           break;
         // Создать на сервере и задаем пароль
         case "create_server":
-          SSH::run([
+          ExecProvider::run([
             'sudo useradd --shell /usr/sbin/nologin --gid "' . addslashes(env('PROXY_GROUP')) . '" "' . addslashes($user->user) . '"',
             'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"'
           ]);
@@ -262,7 +262,7 @@ class UsersController extends Controller
             'comment' => 'Создано при синхронизации'
           ]);
           // Меняем пароль
-          SSH::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
+          ExecProvider::run([ 'usermod --password $(echo "' . addslashes($user->password) . '" | openssl passwd -1 -stdin) "' . addslashes($user->user) . '"' ]);
           break;
       }
 
