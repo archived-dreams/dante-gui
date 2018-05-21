@@ -30,18 +30,18 @@ logoutput: stderr
 internal: eth0 port = 1080
 external: eth0
 
-socksmethod: username
+method: username
 user.privileged: root
-user.unprivileged: nobody
+user.notprivileged: nobody
 user.libwrap: nobody
 
 client pass {
-        from: 0/0 to: 0/0
+        from: 0.0.0.0/0 to: 0.0.0.0/0
         log: error
 }
 
-socks pass {
-        from: 0/0 to: 0/0
+pass {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
         log: error
 }
 
@@ -70,11 +70,16 @@ socks pass {
 ```
 Тут изменяем следующие строки:                          
 **APP_URL** - Полный URL до вашей панели                        
-**APP_PASSWORD** - Пароль для входа в Админ Панель                              
-**PROXY_SERVER** - Адрес сервера прокси (Домен/IP)               
-**PROXY_PORT** - Порт прокси (Его мы указывали выше при настройке)                      
-**PROXY_USER** - Имя пользователя с root правами (Или что бы мог просто создавать/удалять/изменять пользоватлей)                
-**PROXY_PASSWORD** - Пароль от пользователя с root правами                                              
+**APP_PASSWORD** - Пароль для входа в Админ Панель      
+
+**PROXY_SERVER** - Адрес сервера где настроен dante (Домен/IP)
+**PROXY_PORT** - Порт dante прокси (Его мы указывали выше при настройке)   
+
+**USE_SSH** - Использовать SSH для управления демоном dante (Или потребуется запустить процесс php от root-пользователя)
+**SSH_SERVER** - Адрес сервера где настроен dante (Домен/IP)
+**SSH_USER** - Имя пользователя с root правами (Или что бы мог просто создавать/удалять/изменять пользоватлей)    
+**SSH_PASSWORD** - Пароль от пользователя с root правами  
+
 **MAIL\*** - Смотрим документацию к Laravel, там описано подключение сервисов отправки email (Если вам это нужно)               
 **DB_DATABASE** - Название базы данных (Создайте)                               
 **DB_USERNAME** - Пользователь базы данных                                      
