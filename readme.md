@@ -4,7 +4,7 @@ Dante-GUI - Это графический-web инструмент для ком
 Список пользователей       |  Cистема                 |  Данные
 :-------------------------:|:------------------------:|:-------------------------:
 ![Список пользователей](https://user-images.githubusercontent.com/10038023/39105294-b90d6b26-46bd-11e8-963f-d03e5c7bcac3.png)  |  ![Cистема](https://user-images.githubusercontent.com/10038023/39105311-ccaca73c-46bd-11e8-8bc4-eaffce861200.png)  |  ![Данные](https://user-images.githubusercontent.com/10038023/39105307-c8aba5c0-46bd-11e8-8ba1-50afe639c63d.png)
-[Больше скриншотов](https://github.com/IvanDanilov/dante-gui/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B---Screenshots)
+[Больше скриншотов](https://github.com/JsonDeveloper/dante-gui/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B---Screenshots)
 ***
 
 ## Предисловие
@@ -57,7 +57,7 @@ pass {
 
 В папке где вы собираетесь устанавливать скрипт выполните команду:
 ```
-# git clone https://github.com/IvanDanilov/dante-gui ./
+# git clone https://github.com/JsonDeveloper/dante-gui ./
 ```
 Теперь в этой же папке выполняем следующие команды (Не забудьте предварительно установить composer):
 ```
