@@ -7,6 +7,11 @@ Dante-GUI - Это графический-web инструмент для ком
 [Больше скриншотов](https://github.com/JsonDeveloper/dante-gui/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B---Screenshots)
 ***
 
+# Support me
+Hey dude! Help me out for a couple of :beers:!
+<p align="center"><a href="https://www.donationalerts.com/r/jquery"><img src="http://stopbullyingdayton.org/wp-content/uploads/2018/05/fixed-donate.png" width="200"></a></p>
+<i>Avalable methods: PayPal, MasterCard/Visa, QIWI, VKpay, PaySafe, Webmoney, YandexMoney.</i>
+
 ## Предисловие
 Пример установки и настройки написан по Debian 9 (Установка на Ubuntu не должна принципиально отличаться). 
 
